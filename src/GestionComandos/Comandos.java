@@ -18,7 +18,7 @@ public class Comandos implements ParametrosConexion{
 		}
 		return conn;
 	}
-	public void crearTabla() {
+	public void crearTablas() {
 		
 	}
 }
