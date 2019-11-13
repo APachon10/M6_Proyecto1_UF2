@@ -1,5 +1,7 @@
 package Clases;
 
+import GestionComandos.Comandos;
+
 public class Jugador {
 	//Atributos Tabla
 	int id_player=0;
@@ -45,6 +47,18 @@ public class Jugador {
 		this.position = position;
 		this.id_team = id_team;
 		this.team_name = team_name;
+	}
+	//To String
+	@Override
+	public String toString() {
+		return "Jugador [id_player=" + id_player + ", player_name=" + player_name + ", position=" + position
+				+ ", id_team=" + id_team + ", team_name=" + team_name + "]";
+	}
+	
+	public static void main(String[] args) {
+		Comandos c = new Comandos();
+		Object obj = new Jugador(1, "a", "a", 1, "a");
+		c.insert(obj);
 	}
 	
 

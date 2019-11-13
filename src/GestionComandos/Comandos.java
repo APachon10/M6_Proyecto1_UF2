@@ -2,6 +2,9 @@ package GestionComandos;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+
+import Clases.Equipo;
+import Clases.Jugador;
 import Interfaces.ParametrosConexion;
 
 public class Comandos implements ParametrosConexion{
@@ -28,4 +31,13 @@ public class Comandos implements ParametrosConexion{
 				+ "posició VARCHAR(20), "
 				+ "ID_equip INTEGER FOREIGN KEY (ID_equip) REFERENCES TEAMS (ID_equip), nom_equip)";
 	}
+	public void insert(Object obj ) {
+		String insert = "";
+		if(obj instanceof Jugador) {
+			System.out.println(obj);
+		}else if(obj instanceof Equipo) {
+			System.out.println(obj);
+		}
+	}
+
 }
