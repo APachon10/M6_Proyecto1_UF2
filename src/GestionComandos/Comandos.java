@@ -19,6 +19,13 @@ public class Comandos implements ParametrosConexion{
 		return conn;
 	}
 	public void crearTablas() {
-		
+		//Comando Creacion Tabla Teams
+		String teams_table = "CREATE TABLE IF NOT EXIST TEAMS (ID_equip integer PRIMARY KEY AUTO_INCREMENT, "
+				+ "nom_equip VARCHAR(20) ";
+		//Comando Creacion Tabla Jugadores 
+		String players_table = "CREATE TABLE IF NOT EXIST PLAYERS((ID _jugador INTEGER PRIMARY KEY AUTO_INCREMENT, "
+				+ "nom_jugador VARCHAR(20) , "
+				+ "posició VARCHAR(20), "
+				+ "ID_equip INTEGER FOREIGN KEY (ID_equip) REFERENCES TEAMS (ID_equip), nom_equip)";
 	}
 }
