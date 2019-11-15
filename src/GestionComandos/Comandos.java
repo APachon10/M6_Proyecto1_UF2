@@ -39,7 +39,7 @@ public class Comandos implements ParametrosConexion{
 		//Comando Creacion Tabla Jugadores 
 		String players_table = "CREATE TABLE PLAYERS(ID_jugador INTEGER PRIMARY KEY AUTO_INCREMENT, "
 				+ "nom_jugador VARCHAR(20),"
-				+ "posició VARCHAR(20), "
+				+ "posicio VARCHAR(20), "
 				+ "ID_equip INTEGER,"
 				+ "nom_equip VARCHAR(20),"
 				+ "FOREIGN KEY (ID_equip) REFERENCES TEAMS (ID_equip))";
@@ -54,8 +54,33 @@ public class Comandos implements ParametrosConexion{
 			e.printStackTrace();
 		}
 	}
-	public void carga_incial_datos() {
-//		String insert_equipo = 
+	public void carga_incial_jugadores() {
+		//Creamos Los jugadores 
+		Jugador j1 = new Jugador("Alberto Pachon", "Cierre", 1, "FcBarcelona");
+		//Los insertamos dentro de la tabla 
+		String insert_equipo = "insert into players(nom_jugador,posició,ID_equip,nom_equip) values(?,?,?,?)";
+		
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			PreparedStatement pst1,pst2,pst3,pst4,pst5;
+			
+			pst1 = conn.prepareStatement(insert_equipo);
+			pst1.setString(1, j1.getPlayer_name());
+			pst1.setString(2, j1.getPosition());
+			pst1.setInt(3, j1.getId_team());
+			pst1.setString(4, j1.getTeam_name());
+			
+			pst1.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("Error");
+			System.out.println("=================");
+			e.printStackTrace();
+		}
+	}
+	public void carga_inicial_equipos() {
+		
 	}
 	public void insert(Object obj ) {
 		String insert = "";
@@ -65,9 +90,6 @@ public class Comandos implements ParametrosConexion{
 			System.out.println(obj);
 		}
 	}
-	public static void main(String[] args) {
-		Comandos c = new Comandos();
-		c.conexion(ParametrosConexion.url, ParametrosConexion.user, ParametrosConexion.pass);
-	}
+
 
 }

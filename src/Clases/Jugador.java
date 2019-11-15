@@ -41,7 +41,7 @@ public class Jugador {
 		this.team_name = team_name;
 	}
 	//Builder
-	public Jugador(int id_player, String player_name, String position, int id_team, String team_name) {
+	public Jugador(String player_name, String position, int id_team, String team_name) {
 		this.id_player = id_player;
 		this.player_name = player_name;
 		this.position = position;
@@ -54,12 +54,7 @@ public class Jugador {
 		return "Jugador [id_player=" + id_player + ", player_name=" + player_name + ", position=" + position
 				+ ", id_team=" + id_team + ", team_name=" + team_name + "]";
 	}
-	
-	public static void main(String[] args) {
-		Comandos c = new Comandos();
-		Object obj = new Jugador(1, "a", "a", 1, "a");
-		c.insert(obj);
-	}
+
 	
 
 }
