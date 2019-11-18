@@ -84,10 +84,41 @@ public class Comandos implements ParametrosConexion{
 	}
 	public void insert(Object obj ) {
 		String insert = "";
+		Connection conn = null;
 		if(obj instanceof Jugador) {
-//			insert = "insert into Jugador "
+			insert = "insert into players(ID_jugador,nom_jugador_posicio,ID_equip,nom_equip) values(?,?,?,?)";
+			try {
+				conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+				PreparedStatement pst1;
+				
+				pst1 = conn.prepareStatement(insert);
+				pst1.setString(1, ((Jugador) obj).getPlayer_name());
+				pst1.setString(2, ((Jugador) obj).getPosition());
+				pst1.setInt(3, ((Jugador) obj).getId_team());
+				pst1.setString(4, ((Jugador) obj).getTeam_name());
+				
+				pst1.executeUpdate();
+			} catch (Exception e) {
+				System.out.println("Error");
+				System.out.println("=================");
+				e.printStackTrace();
+			}
 		}else if(obj instanceof Equipo) {
-			System.out.println(obj);
+			insert = "insert into teams(ID_equip,nom_equip) values(?,?)";
+			try {
+				conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+				PreparedStatement pst1
+				
+				pst1 = conn.prepareStatement(insert);
+				pst1.setInt(1, ((Equipo) obj).getId_team());
+				pst1.setString(2, ((Equipo) obj).getTeam_name());
+				
+				pst1.executeUpdate();
+			} catch (Exception e) {
+				System.out.println("Error");
+				System.out.println("=================");
+				e.printStackTrace();
+			}
 		}
 	}
 
