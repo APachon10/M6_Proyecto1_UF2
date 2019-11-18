@@ -50,7 +50,24 @@ public class Main implements ParametrosConexion{
 				}
 				break;
 			case 2:
-				
+				String team_name= "";
+				System.out.println("Que equipo quieres inspeccionar? ");
+				team_name = scan.next();
+				String select_players = "select * from players where nom_equip = "+team_name;
+				try {
+					PreparedStatement pst = conn.prepareStatement(select_players); 
+					ResultSet rs = pst.executeQuery();
+					System.out.println("==============================");
+					while(rs.next()) {
+						System.out.println(rs.getInt(1)+" - "+rs.getString(2)+" - "+rs.getString(3)+" - "+rs.getInt(4)
+						+" - "+rs.getString(5));
+					}
+					System.out.println("==============================");
+				} catch (Exception e) {
+					System.out.println("Error");
+					System.out.println("=================");
+					e.printStackTrace();
+				}
 				break;
 			}
 			System.out.print("Quieres Continuar?");
