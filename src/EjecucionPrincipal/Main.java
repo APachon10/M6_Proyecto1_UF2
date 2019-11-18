@@ -70,9 +70,15 @@ public class Main implements ParametrosConexion{
 					e.printStackTrace();
 				}
 				break;
+			case 3:
+				Comandos c2 = new Comandos();
+				c2.contarjugadores(conn);
+				break;
 			}
 			System.out.print("Quieres Continuar?");
 			confirmacion = scan.next();
 		} while (!confirmacion.equalsIgnoreCase("No"));
+		System.out.println("===========================");
+		System.out.println("Sesion Terminada");
 	}
 }

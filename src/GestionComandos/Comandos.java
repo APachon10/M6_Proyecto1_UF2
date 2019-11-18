@@ -3,6 +3,7 @@ package GestionComandos;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 import Clases.Equipo;
@@ -59,20 +60,20 @@ public class Comandos implements ParametrosConexion{
 		Jugador j1 = new Jugador("Alberto Pachon", "Cierre", 1, "FcBarcelona");
 		//Los insertamos dentro de la tabla 
 		String insert_equipo = "insert into players(nom_jugador,posició,ID_equip,nom_equip) values(?,?,?,?)";
-		
+
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
 			PreparedStatement pst1,pst2,pst3,pst4,pst5;
-			
+
 			pst1 = conn.prepareStatement(insert_equipo);
 			pst1.setString(1, j1.getPlayer_name());
 			pst1.setString(2, j1.getPosition());
 			pst1.setInt(3, j1.getId_team());
 			pst1.setString(4, j1.getTeam_name());
-			
+
 			pst1.executeUpdate();
-			
+
 		} catch (Exception e) {
 			System.out.println("Error");
 			System.out.println("=================");
@@ -80,7 +81,7 @@ public class Comandos implements ParametrosConexion{
 		}
 	}
 	public void carga_inicial_equipos() {
-		
+
 	}
 	public void insert(Object obj ) {
 		String insert = "";
@@ -90,13 +91,13 @@ public class Comandos implements ParametrosConexion{
 			try {
 				conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
 				PreparedStatement pst1;
-				
+
 				pst1 = conn.prepareStatement(insert);
 				pst1.setString(1, ((Jugador) obj).getPlayer_name());
 				pst1.setString(2, ((Jugador) obj).getPosition());
 				pst1.setInt(3, ((Jugador) obj).getId_team());
 				pst1.setString(4, ((Jugador) obj).getTeam_name());
-				
+
 				pst1.executeUpdate();
 			} catch (Exception e) {
 				System.out.println("Error");
@@ -108,10 +109,10 @@ public class Comandos implements ParametrosConexion{
 			try {
 				conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
 				PreparedStatement pst1;
-				
+
 				pst1 = conn.prepareStatement(insert);
 				pst1.setString(1, ((Equipo) obj).getTeam_name());
-				
+
 				pst1.executeUpdate();
 			} catch (Exception e) {
 				System.out.println("Error");
@@ -119,7 +120,30 @@ public class Comandos implements ParametrosConexion{
 				e.printStackTrace();
 			}
 		}
+	} 
+	public void contarjugadores(Connection conn) {
+		int players_number = 0;
+		try {
+			for (int i = 0; i < 2; i++) {
+				String validacion = "SELECT COUNT(*) from teams where ID_equip=" + i;
+				PreparedStatement pst = conn.prepareStatement(validacion);
+			
+				ResultSet rs = pst.executeQuery();
+				while(rs.next()) {
+					players_number = rs.getInt(1);
+				}
+				
+				if(players_number == 5) {
+					System.out.println("El equipo tiene almenos 5 jugadores");
+				}else{
+					System.out.println("El equipo no tiene almenos 5 jugadores");
+				}
+			} 
+		}catch (Exception e) {
+			System.out.println("Error");
+			System.out.println("=================");
+			e.printStackTrace();
+		}
 	}
-
-
 }
+
