@@ -86,7 +86,7 @@ public class Comandos implements ParametrosConexion{
 		String insert = "";
 		Connection conn = null;
 		if(obj instanceof Jugador) {
-			insert = "insert into players(ID_jugador,nom_jugador_posicio,ID_equip,nom_equip) values(?,?,?,?)";
+			insert = "insert into players(nom_jugador,posicio,ID_equip,nom_equip) values(?,?,?,?)";
 			try {
 				conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
 				PreparedStatement pst1;
@@ -104,14 +104,13 @@ public class Comandos implements ParametrosConexion{
 				e.printStackTrace();
 			}
 		}else if(obj instanceof Equipo) {
-			insert = "insert into teams(ID_equip,nom_equip) values(?,?)";
+			insert = "insert into teams(nom_equip) values(?)";
 			try {
 				conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
-				PreparedStatement pst1
+				PreparedStatement pst1;
 				
 				pst1 = conn.prepareStatement(insert);
-				pst1.setInt(1, ((Equipo) obj).getId_team());
-				pst1.setString(2, ((Equipo) obj).getTeam_name());
+				pst1.setString(1, ((Equipo) obj).getTeam_name());
 				
 				pst1.executeUpdate();
 			} catch (Exception e) {

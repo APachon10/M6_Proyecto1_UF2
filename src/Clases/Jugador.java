@@ -42,7 +42,11 @@ public class Jugador {
 	}
 	//Builder
 	public Jugador(String player_name, String position, int id_team, String team_name) {
-		this.id_player = id_player+1;
+		if(id_player <=0) {
+			this.id_player = 0;
+		}else {
+			this.id_player = id_player+1;
+		}
 		this.player_name = player_name;
 		this.position = position;
 		this.id_team = id_team;

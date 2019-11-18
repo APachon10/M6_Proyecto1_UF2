@@ -21,8 +21,12 @@ public class Equipo {
 		this.team_name = team_name;
 	}
 	//Builder
-	public Equipo(int id_team, String team_name) {
-		this.id_team = id_team;
+	public Equipo(String team_name) {
+		if(id_team <=0) {
+			this.id_team=0;
+		}else {
+			this.id_team = id_team+1;
+		}
 		this.team_name = team_name;
 	}
 	//ToString
@@ -30,12 +34,5 @@ public class Equipo {
 	public String toString() {
 		return "Equipo [id_team=" + id_team + ", team_name=" + team_name + "]";
 	}
-	public static void main(String[] args) {
-		Comandos c = new Comandos();
-		Object obj = new Equipo(1, "a");
-		c.insert(obj);
-	}
-	
-	
 	
 }
