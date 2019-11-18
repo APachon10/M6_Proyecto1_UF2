@@ -53,7 +53,8 @@ public class Main implements ParametrosConexion{
 				String team_name= "";
 				System.out.println("Que equipo quieres inspeccionar? ");
 				team_name = scan.next();
-				String select_players = "select * from players where nom_equip = "+team_name;
+				String select_players = "select * from players where nom_equip = "+"'"+team_name+"'";
+				System.out.println(select_players);
 				try {
 					PreparedStatement pst = conn.prepareStatement(select_players); 
 					ResultSet rs = pst.executeQuery();
@@ -72,6 +73,6 @@ public class Main implements ParametrosConexion{
 			}
 			System.out.print("Quieres Continuar?");
 			confirmacion = scan.next();
-		} while (!confirmacion.equals("No"));
+		} while (!confirmacion.equalsIgnoreCase("No"));
 	}
 }
