@@ -182,9 +182,10 @@ public class Comandos_SQLite {
 	//Carga Inicial de Datos 
 	public void crearTablas_SQL(Connection conn) {
 		//Comando Creacion Tabla Teams
-		String teams_table = "CREATE TABLE TEAMS (ID_equip integer PRIMARY KEY AUTO_INCREMENT,nom_equip VARCHAR(20));";
+		String teams_table = "CREATE TABLE IF NOT EXISTS TEAMS (ID_equip integer PRIMARY KEY,nom_equip text(20));";
 		Statement pst = null;
 		try {
+			pst = conn.createStatement();
 			pst.execute(teams_table);
 		} catch (Exception e) {
 			System.out.println("Error");
@@ -192,17 +193,16 @@ public class Comandos_SQLite {
 			e.printStackTrace();
 		}
 		//Comando Creacion Tabla Jugadores 
-		String players_table = "CREATE TABLE PLAYERS(ID_jugador INTEGER PRIMARY KEY AUTO_INCREMENT, "
-				+ "nom_jugador VARCHAR(20),"
-				+ "posicio VARCHAR(20), "
+		String players_table = "CREATE TABLE IF NOT EXISTS PLAYERS(ID_jugador INTEGER PRIMARY KEY, "
+				+ "nom_jugador text(20),"
+				+ "posicio text(20), "
 				+ "ID_equip INTEGER,"
-				+ "nom_equip VARCHAR(20),"
+				+ "nom_equip text(20),"
 				+ "FOREIGN KEY (ID_equip) REFERENCES TEAMS (ID_equip));";
-		PreparedStatement pst2 = null;
+		Statement pst2 = null;
 		try {
-			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
-			pst2 = conn.prepareStatement(players_table);
-			pst2.executeUpdate();
+			pst2 = conn.createStatement();
+			pst2.execute(teams_table);
 		} catch (Exception e) {
 			System.out.println("Error");
 			System.out.println("=================");
