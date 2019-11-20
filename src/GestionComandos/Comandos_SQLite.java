@@ -179,7 +179,7 @@ public class Comandos_SQLite {
 	}
 
 
-	//Carga Inicial de Datos 
+	//Carga Inicial de Datos
 	public void crearTablas_SQL(Connection conn) {
 		//Comando Creacion Tabla Teams
 		String teams_table = "CREATE TABLE IF NOT EXISTS TEAMS (ID_equip integer PRIMARY KEY,nom_equip text(20));";
@@ -192,24 +192,20 @@ public class Comandos_SQLite {
 			System.out.println("=================");
 			e.printStackTrace();
 		}
+
 		//Comando Creacion Tabla Jugadores 
-		String players_table = "CREATE TABLE IF NOT EXISTS PLAYERS(ID_jugador INTEGER PRIMARY KEY, "
-				+ "nom_jugador text(20),"
-				+ "posicio text(20), "
-				+ "ID_equip INTEGER,"
-				+ "nom_equip text(20),"
-				+ "FOREIGN KEY (ID_equip) REFERENCES TEAMS (ID_equip));";
+		String players_table = "CREATE TABLE IF NOT EXISTS PLAYERS(ID_jugador INTEGER PRIMARY KEY,nom_jugador text(20),posicio text(20),ID_equip INTEGER,nom_equip text(20),FOREIGN KEY (ID_equip) REFERENCES TEAMS (ID_equip));";
 		Statement pst2 = null;
 		try {
 			pst2 = conn.createStatement();
-			pst2.execute(teams_table);
+			pst2.execute(players_table);
 		} catch (Exception e) {
 			System.out.println("Error");
 			System.out.println("=================");
 			e.printStackTrace();
 		}
 	}
-	public void carga_incial_jugadores() {
+	public void carga_incial_jugadores(Connection conn) {
 		//Creamos Los jugadores 
 		Jugador j1 = new Jugador("Alex Lluch Romeu", "Portero", 1, "FcBarcelona");
 		Jugador j2 = new Jugador("Jesus Nazaret", "Cierre", 1, "FcBarcelona");
@@ -245,7 +241,7 @@ public class Comandos_SQLite {
 		Jugador j24 = new Jugador("Adrian Morales", "Pivot", 5, "Zaragoza");
 		Jugador j25 = new Jugador("Sean Sanches", "Ala", 5, "Zaragoza");
 
-		//Jugadores Santa Coloma 
+		//		//Jugadores Santa Coloma 
 		Jugador j26 = new Jugador("Carlos Oliviera", "Portero", 6, "Santa Coloma");
 		Jugador j27 = new Jugador("Marcos Rivallos", "Cierre", 6, "Santa Coloma");
 		Jugador j28 = new Jugador("Marcelo Martines", "Ala", 6, "Santa Coloma");
@@ -255,9 +251,7 @@ public class Comandos_SQLite {
 		//Los insertamos dentro de la tabla 
 		String insert_equipo = "insert into players(nom_jugador,posicio,ID_equip,nom_equip) values(?,?,?,?);";
 
-		Connection conn = null;
 		try {
-			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
 			PreparedStatement pst1,pst2,pst3,pst4,pst5,pst6,pst7,pst8,pst9,pst10,pst11,pst12,pst13,pst14,pst15,pst16,pst17,pst18,pst19,pst20,pst21,pst22,pst23,pst24,pst25,pst26,pst27,pst28,pst29,pst30;
 
 			pst1 = conn.prepareStatement(insert_equipo);
@@ -354,7 +348,7 @@ public class Comandos_SQLite {
 			e.printStackTrace();
 		}
 	}
-	public void carga_inicial_equipos() {
+	public void carga_inicial_equipos(Connection conn) {
 		//Creamos Los jugadores 
 		Equipo eq1 = new Equipo("FcBarcelona");
 		Equipo eq2 = new Equipo("ElPozo Murcia");
@@ -365,9 +359,7 @@ public class Comandos_SQLite {
 		//Los insertamos dentro de la tabla 
 		String insert_equipo = "insert into teams(nom_equip) values(?);";
 
-		Connection conn = null;
 		try {
-			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
 			PreparedStatement pst1,pst2,pst3,pst4,pst5,pst6;
 
 			pst1 = conn.prepareStatement(insert_equipo);

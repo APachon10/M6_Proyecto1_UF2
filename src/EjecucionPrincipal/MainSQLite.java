@@ -24,15 +24,15 @@ public class MainSQLite {
 		
 		File f = new File(db_Adress);
 
-		if (!f.exists()) {
+		if (f.exists()) {
 			Connection conn = c.connect(db_Adress);
 			Menu(conn);
 		}else {
 			Connection conn = c.connect(db_Adress);
 			Comandos_SQLite c2 = new Comandos_SQLite();
 			c2.crearTablas_SQL(conn);
-			c2.carga_inicial_equipos();
-			c2.carga_incial_jugadores();
+			c2.carga_inicial_equipos(conn);
+			c2.carga_incial_jugadores(conn);
 			Menu(conn);
 		} 
 	}
