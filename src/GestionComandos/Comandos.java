@@ -146,18 +146,23 @@ public class Comandos implements ParametrosConexion{
 			try {
 				conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
 				PreparedStatement pst1;
-
+				
+				String select = "select * from teams ";
+				PreparedStatement pst3 = conn.prepareStatement(select);
+				ResultSet rs2  = pst3.executeQuery();
+				while(rs2.next()) {
+					System.out.println(rs2.getInt(1) + " - " + rs2.getString(2));
+				}
 				pst1 = conn.prepareStatement(insert);
 				pst1.setString(1, ((Equipo) obj).getTeam_name());
 
 				pst1.executeUpdate();
 				System.out.println("========================");
-				String select = "select * from teams ";
-				PreparedStatement pst2 = conn.prepareStatement(select);
+				String select2 = "select * from teams ";
+				PreparedStatement pst2 = conn.prepareStatement(select2);
 				ResultSet rs  = pst2.executeQuery();
 				while(rs.next()) {
 					System.out.println(rs.getInt(1) + " - " + rs.getString(2));
-
 				}
 			} catch (Exception e) {
 				System.out.println("Error");

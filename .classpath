@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/xp/Downloads/Desktop/Entornos_Eclipse/AMS2/M6/UF2/M6_Proyecto1_UF2/mysql-connector-java-8.0.18.jar"/>
-	<classpathentry kind="lib" path="C:/Users/xp/Downloads/Desktop/Entornos_Eclipse/AMS2/M6/UF2/M6_Proyecto1_UF2/sqlite-jdbc-3.27.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/alumlocal/Desktop/Entornos_Eclipse/M6/UF2/M6_Proyecto1_UF2/mysql-connector-java-8.0.18.jar"/>
+	<classpathentry kind="lib" path="C:/Users/alumlocal/Desktop/Entornos_Eclipse/M6/UF2/M6_Proyecto1_UF2/sqlite-jdbc-3.27.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
