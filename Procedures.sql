@@ -5,7 +5,7 @@ CREATE OR REPLACE PROCEDURE GenerarTablas() AS
         CREATE TABLE IF NOT EXISTS Teams(
             ID_equip integer PRIMARY KEY AUTO_INCREMENT,
             nom_equip VARCHAR(20)
-        );
+        )
         
         CREATE TABLE IF NOT EXISTS Players(
             ID_jugador INTEGER PRIMARY KEY AUTO_INCREMENT,
