@@ -248,11 +248,11 @@ public class Comandos implements ParametrosConexion{
 		Jugador j15 = new Jugador("Adrian Alonso", "Ala", 3, "Movistar Inter");
 
 		//Jugadores Cartagena
-		Jugador j16 = new Jugador("Alejandro Rivera", "Portero", 4, "Cartagen");
-		Jugador j17 = new Jugador("Marlon Rivallos", "Cierre", 4, "Cartagen");
-		Jugador j18 = new Jugador("Carlos Martines", "Ala", 4, "Cartagen");
-		Jugador j19 = new Jugador("Marc Morales", "Pivot", 4, "Cartagen");
-		Jugador j20 = new Jugador("Adrian Sanchez", "Ala", 4, "Cartagen");
+		Jugador j16 = new Jugador("Alejandro Rivera", "Portero", 4, "Cartagena");
+		Jugador j17 = new Jugador("Marlon Rivallos", "Cierre", 4, "Cartagena");
+		Jugador j18 = new Jugador("Carlos Martines", "Ala", 4, "Cartagena");
+		Jugador j19 = new Jugador("Marc Morales", "Pivot", 4, "Cartagena");
+		Jugador j20 = new Jugador("Adrian Sanchez", "Ala", 4, "Cartagena");
 
 		//Jugadores Zaragoza
 		Jugador j21 = new Jugador("Alejandro Oliviera", "Portero", 5, "Zaragoza");
