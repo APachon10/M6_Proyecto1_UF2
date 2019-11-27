@@ -1,7 +1,7 @@
-
-
-CREATE OR REPLACE PROCEDURE GenerarTablas() AS 
-    BEGIN
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateTables`()
+    NO SQL
+BEGIN
         CREATE TABLE IF NOT EXISTS Teams(
             ID_equip integer PRIMARY KEY AUTO_INCREMENT,
             nom_equip VARCHAR(20)
@@ -29,4 +29,5 @@ CREATE OR REPLACE PROCEDURE GenerarTablas() AS
             teamB VARCHAR(20),
             GoalsB INTEGER
         );
-    END;
+    END$$
+DELIMITER ;
