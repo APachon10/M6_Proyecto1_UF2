@@ -373,9 +373,9 @@ public class Comandos implements ParametrosConexion{
 	public void carga_inicial_equipos() {
 		//Creamos Los jugadores 
 		Equipo eq1 = new Equipo("FcBarcelona");
-		Equipo eq2 = new Equipo("ElPozo Murcia");
-		Equipo eq3 = new Equipo("Movistar Inter");
-		Equipo eq4 = new Equipo("Cartagen");
+		Equipo eq2 = new Equipo("ElPozo_Murcia");
+		Equipo eq3 = new Equipo("Movistar_Inter");
+		Equipo eq4 = new Equipo("Cartagena");
 		Equipo eq5 = new Equipo("Zaragoza");
 		Equipo eq6 = new Equipo("Santa Coloma");
 		//Los insertamos dentro de la tabla 

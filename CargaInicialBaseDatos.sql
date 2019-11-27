@@ -1,5 +1,5 @@
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateTables`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateTables`(IN `nom_equip` VARCHAR(20), IN `nom_jugador` VARCHAR(20), IN `posicio` VARCHAR(20), IN `ID_Equip` INT, IN `nom_equip2` VARCHAR(20))
     NO SQL
 BEGIN
         CREATE TABLE IF NOT EXISTS Teams(
@@ -29,5 +29,8 @@ BEGIN
             teamB VARCHAR(20),
             GoalsB INTEGER
         );
+        
+        insert into teams(nom_equip) values(nom_equip);
+        insert into players(nom_jugador,posicio,ID_equip,nom_equip) 				values(nom_jugador,posicio,ID_Equip,nom_equip2);
     END$$
 DELIMITER ;
