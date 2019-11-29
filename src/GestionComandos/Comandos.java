@@ -111,7 +111,7 @@ public class Comandos implements ParametrosConexion{
 			insert = "insert into players(nom_jugador,posicio,ID_equip,nom_equip) values(?,?,?,?)";
 			try {
 				PreparedStatement pst1;
-				
+
 				System.out.println("========================");
 				String select = "select * from players ";
 				PreparedStatement pst3 = conn.prepareStatement(select);
@@ -148,7 +148,7 @@ public class Comandos implements ParametrosConexion{
 			try {
 				conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
 				PreparedStatement pst1;
-				
+
 				String select = "select * from teams ";
 				PreparedStatement pst3 = conn.prepareStatement(select);
 				ResultSet rs2  = pst3.executeQuery();
@@ -208,6 +208,68 @@ public class Comandos implements ParametrosConexion{
 		}
 	}
 	public void carga_incial_jugadores() {
+		Comandos c = new Comandos();
+		ArrayList<Jugador> lista_jugadores = c.crear_Lista_Jugadores();
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			CallableStatement cs=null;
+			for (Jugador player : lista_jugadores) {
+				cs =  conn.prepareCall("{call insertPlayers(?,?,?,?)}");
+				cs.setString(1, player.getPlayer_name());
+				cs.setString(2, player.getPosition());
+				cs.setInt(3, player.getId_team());
+				cs.setString(4, player.getTeam_name());
+				cs.executeUpdate();
+			}
+		} catch (Exception e) {
+			System.out.println("Error");
+			System.out.println("=================");
+			e.printStackTrace();
+		}
+	}
+	public void carga_inicial_equipos() {
+		Connection conn = null;
+		Comandos c = new Comandos();
+		ArrayList<Equipo> Equipos = c.crear_Lista_Equipos();
+
+		try {
+			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			CallableStatement cs=null;
+			for (Equipo equipo : Equipos) {
+				cs =  conn.prepareCall("{call insertTeams(?)}");
+				cs.setString(1, equipo.getTeam_name());
+				cs.executeUpdate();
+			}
+		} catch (Exception e) {
+			System.out.println("Error");
+			System.out.println("=================");
+			e.printStackTrace();
+		}
+	}
+	public ArrayList crear_Lista_Equipos() {
+		ArrayList<Equipo> Equipos = new ArrayList<Equipo>();
+		//Creamos Los Equipos
+		Equipo eq1 = new Equipo("FcBarcelona");
+		Equipo eq2 = new Equipo("ElPozo_Murcia");
+		Equipo eq3 = new Equipo("Movistar_Inter");
+		Equipo eq4 = new Equipo("Cartagena");
+		Equipo eq5 = new Equipo("Zaragoza");
+		Equipo eq6 = new Equipo("Santa Coloma");
+
+		// los insertamos en el ArrayList
+		Equipos.add(eq1);
+		Equipos.add(eq2);
+		Equipos.add(eq3);
+		Equipos.add(eq4);
+		Equipos.add(eq5);
+		Equipos.add(eq6);
+
+		return Equipos;
+	}
+	public ArrayList crear_Lista_Jugadores() {
+		ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+
 		//Creamos Los jugadores 
 		Jugador j1 = new Jugador("Alex Lluch Romeu", "Portero", 1, "FcBarcelona");
 		Jugador j2 = new Jugador("Jesus Nazaret", "Cierre", 1, "FcBarcelona");
@@ -248,64 +310,45 @@ public class Comandos implements ParametrosConexion{
 		Jugador j27 = new Jugador("Marcos Rivallos", "Cierre", 6, "Santa Coloma");
 		Jugador j28 = new Jugador("Marcelo Martines", "Ala", 6, "Santa Coloma");
 		Jugador j29 = new Jugador("Adolf Morales", "Pivot", 6, "Santa Coloma");
-
-
-		//Los insertamos dentro de la tabla 
-		String insert_equipo = "insert into players(nom_jugador,posicio,ID_equip,nom_equip) values(?,?,?,?)";
-
-		Connection conn = null;
-		try {
-			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
-			
-		} catch (Exception e) {
-			System.out.println("Error");
-			System.out.println("=================");
-			e.printStackTrace();
-		}
-	}
-	public void carga_inicial_equipos() {
-		Connection conn = null;
-		Comandos c = new Comandos();
-		ArrayList<Equipo> Equipos = c.crear_Lista_Equipos();
-
-		try {
-			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
-			CallableStatement cs=null;
-			for (Equipo equipo : Equipos) {
-				cs =  conn.prepareCall("{call insertTeams(?)}");
-				cs.setString(1, equipo.getTeam_name());
-				cs.executeUpdate();
-			}
-		} catch (Exception e) {
-			System.out.println("Error");
-			System.out.println("=================");
-			e.printStackTrace();
-		}
-	}
-	public ArrayList crear_Lista_Equipos() {
-		ArrayList<Equipo> Equipos = new ArrayList<Equipo>();
-		//Creamos Los Equipos
-		Equipo eq1 = new Equipo("FcBarcelona");
-		Equipo eq2 = new Equipo("ElPozo_Murcia");
-		Equipo eq3 = new Equipo("Movistar_Inter");
-		Equipo eq4 = new Equipo("Cartagena");
-		Equipo eq5 = new Equipo("Zaragoza");
-		Equipo eq6 = new Equipo("Santa Coloma");
 		
-		// los insertamos en el ArrayList
-		Equipos.add(eq1);
-		Equipos.add(eq2);
-		Equipos.add(eq3);
-		Equipos.add(eq4);
-		Equipos.add(eq5);
-		Equipos.add(eq6);
+		jugadores.add(j1);
+		jugadores.add(j2);
+		jugadores.add(j3);
+		jugadores.add(j4);
+		jugadores.add(j5);
+		jugadores.add(j6);
+		jugadores.add(j7);
+		jugadores.add(j8);
+		jugadores.add(j9);
+		jugadores.add(j10);
+		jugadores.add(j11);
+		jugadores.add(j12);
+		jugadores.add(j13);
+		jugadores.add(j14);
+		jugadores.add(j15);
+		jugadores.add(j16);
+		jugadores.add(j17);
+		jugadores.add(j18);
+		jugadores.add(j19);
+		jugadores.add(j20);
+		jugadores.add(j21);
+		jugadores.add(j22);
+		jugadores.add(j23);
+		jugadores.add(j24);
+		jugadores.add(j25);
+		jugadores.add(j26);
+		jugadores.add(j27);
+		jugadores.add(j28);
+		jugadores.add(j29);
 		
-		return Equipos;
+		return jugadores;
 	}
 	public static void main(String[] args) {
 		Comandos c = new Comandos();
+		//c.crearBasedeDatos();
 		c.crearTablas_SQL();
 		c.carga_inicial_equipos();
+		c.carga_incial_jugadores();
 	}
 }
 
