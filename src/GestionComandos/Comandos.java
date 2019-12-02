@@ -11,25 +11,10 @@ import java.util.Scanner;
 
 import Clases.Equipo;
 import Clases.Jugador;
+import Clases.Partido;
 import Interfaces.ParametrosConexion;
 
 public class Comandos implements ParametrosConexion{
-	public void crearBasedeDatos() {
-
-		String drive = "jdbc:mysql://localhost:3306/";
-		String query = "Create database footballmanager";
-		Connection conn = null;
-		try {
-			conn = DriverManager.getConnection(drive,ParametrosConexion.user,ParametrosConexion.pass);
-			PreparedStatement pst = conn.prepareStatement(query);
-			pst.executeUpdate();
-		} catch (Exception e) {
-			System.out.println("Error ");
-			System.out.println("==========");
-			e.printStackTrace();
-		}
-
-	}
 	public Connection conexion (String url,String user,String password) {
 		Connection conn = null;
 		try {
@@ -194,7 +179,8 @@ public class Comandos implements ParametrosConexion{
 			e.printStackTrace();
 		}
 	}
-	//Carga Inicial de la base de Datos 
+
+	//Carga Inicial de Datos 
 	public void crearTablas_SQL() {
 		Connection conn = null;
 		try {
@@ -207,6 +193,7 @@ public class Comandos implements ParametrosConexion{
 			e.printStackTrace();
 		}
 	}
+
 	public void carga_incial_jugadores() {
 		Comandos c = new Comandos();
 		ArrayList<Jugador> lista_jugadores = c.crear_Lista_Jugadores();
@@ -247,6 +234,53 @@ public class Comandos implements ParametrosConexion{
 			e.printStackTrace();
 		}
 	}
+	public void carga_inicial_partidos() {
+		Connection conn = null;
+		Comandos c = new Comandos();
+		ArrayList<Partido> Partidos = c.crear_Lista_partidos();
+
+		try {
+			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			CallableStatement cs=null;
+			for (Partido partido : Partidos) {
+				cs =  conn.prepareCall("{call insertMatches(?,?,?,?)}");
+				cs.setString(1,partido.getTeamA());
+				cs.setInt(1,partido.getGolsA());
+				cs.setString(1,partido.getTeamB());
+				cs.setInt(1,partido.getGolsB());
+				cs.executeUpdate();
+			}
+		} catch (Exception e) {
+			System.out.println("Error");
+			System.out.println("=================");
+			e.printStackTrace();
+		}
+
+	}
+	public void carga_inicial_clasificacion() {
+		Comandos c = new Comandos();
+		ArrayList<Equipo> lista_equipos = c.crear_Lista_Equipos();
+		Connection conn = null;
+		CallableStatement cs = null;
+		try {
+			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			for (Equipo equipo : lista_equipos) {
+				cs =conn.prepareCall("{call InsertClassification(?,?,?,?,?)}");
+				cs.setString(1, equipo.getTeam_name());
+				cs.setInt(2, 0);
+				cs.setInt(3,0);
+				cs.setInt(4, 0);
+				cs.setInt(5, 0);
+				
+				cs.executeUpdate();
+			}
+		} catch (Exception e) {
+			System.out.println("Error");
+			System.out.println("=================");
+			e.printStackTrace();
+		}
+	}
+
 	public ArrayList crear_Lista_Equipos() {
 		ArrayList<Equipo> Equipos = new ArrayList<Equipo>();
 		//Creamos Los Equipos
@@ -310,7 +344,7 @@ public class Comandos implements ParametrosConexion{
 		Jugador j27 = new Jugador("Marcos Rivallos", "Cierre", 6, "Santa Coloma");
 		Jugador j28 = new Jugador("Marcelo Martines", "Ala", 6, "Santa Coloma");
 		Jugador j29 = new Jugador("Adolf Morales", "Pivot", 6, "Santa Coloma");
-		
+
 		jugadores.add(j1);
 		jugadores.add(j2);
 		jugadores.add(j3);
@@ -340,8 +374,24 @@ public class Comandos implements ParametrosConexion{
 		jugadores.add(j27);
 		jugadores.add(j28);
 		jugadores.add(j29);
-		
+
 		return jugadores;
+	}
+	public ArrayList crear_Lista_partidos() {
+		ArrayList<Partido> lista_partidos = new ArrayList<Partido>();
+		Partido p1 = new Partido("FcBarcelona",5,"Movistar_Inter",4);
+		Partido p2 = new Partido("ElPozo_Murcia",0,"Cartagena",4);
+		Partido p3 = new Partido("Zaragoza",1,"Santa Coloma",1);
+
+		lista_partidos.add(p1);
+		lista_partidos.add(p3);
+		lista_partidos.add(p2);
+		return lista_partidos;
+	}
+
+	public static void main(String[] args) {
+		Comandos c = new Comandos();
+		c.carga_inicial_clasificacion();
 	}
 }
 

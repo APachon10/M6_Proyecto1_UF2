@@ -20,7 +20,7 @@ BEGIN
             team VARCHAR(20),
             wins INTEGER,
             loses INTEGER,
-            drawn INTEGER,
+            draws INTEGER,
             points INTEGER 
         );       
         CREATE TABLE IF NOT EXISTS Matchs(

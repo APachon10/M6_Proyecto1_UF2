@@ -14,16 +14,11 @@ public class Main implements ParametrosConexion{
 	public static void main(String[] args) {
 		Comandos c = new Comandos();
 		Connection conn = c.conexion(ParametrosConexion.url, ParametrosConexion.user, ParametrosConexion.pass);
-		if(conn == null) {
-			c.crearBasedeDatos(); 
-			conn = c.conexion(ParametrosConexion.url, ParametrosConexion.user, ParametrosConexion.pass);
-			c.crearTablas_SQL();
-			c.carga_inicial_equipos();
-			c.carga_incial_jugadores();
-			Menu(conn);
-		}else {
-			Menu(conn);
-		}
+		conn = c.conexion(ParametrosConexion.url, ParametrosConexion.user, ParametrosConexion.pass);
+		c.crearTablas_SQL();
+		c.carga_inicial_equipos();
+		c.carga_incial_jugadores();
+		Menu(conn);
 	}
 	public static void Menu(Connection conn) {
 		Scanner scan = new Scanner(System.in);
