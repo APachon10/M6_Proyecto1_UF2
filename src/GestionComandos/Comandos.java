@@ -194,7 +194,7 @@ public class Comandos implements ParametrosConexion{
 			e.printStackTrace();
 		}
 	}
-	//Carga Inicial de Datos 
+	//Carga Inicial de la base de Datos 
 	public void crearTablas_SQL() {
 		Connection conn = null;
 		try {
@@ -342,13 +342,6 @@ public class Comandos implements ParametrosConexion{
 		jugadores.add(j29);
 		
 		return jugadores;
-	}
-	public static void main(String[] args) {
-		Comandos c = new Comandos();
-		//c.crearBasedeDatos();
-		c.crearTablas_SQL();
-		c.carga_inicial_equipos();
-		c.carga_incial_jugadores();
 	}
 }
 
