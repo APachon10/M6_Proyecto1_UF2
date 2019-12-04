@@ -403,11 +403,20 @@ public class Comandos implements ParametrosConexion{
 			CallableStatement cs = conn.prepareCall("{call altertableteams()}");
 			cs.executeUpdate();
 		} catch (Exception e) {
-			
+			System.out.println("Error");
+			System.out.println("=================");
+			e.printStackTrace();
 		}
 	}
 	public void updateClassification() {
-		
+		Connection conn = null;
+		try {
+			
+		} catch (Exception e) {
+			System.out.println("Error");
+			System.out.println("=================");
+			e.printStackTrace();
+		}
 	}
 
 }
