@@ -18,6 +18,8 @@ public class Main implements ParametrosConexion{
 		c.crearTablas_SQL();
 		c.carga_inicial_equipos();
 		c.carga_incial_jugadores();
+		c.carga_inicial_partidos();
+		c.carga_inicial_clasificacion();
 		Menu(conn);
 	}
 	public static void Menu(Connection conn) {

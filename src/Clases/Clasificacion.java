@@ -17,6 +17,9 @@ public class Clasificacion {
 		this.draws = draws;
 		this.points = points;
 	}
+	public Clasificacion(String team) {
+		this.team = team;
+	}
 	//Getters
 	public int getPosition_id() {
 		return position_id;

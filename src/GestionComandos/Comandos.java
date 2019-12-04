@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Clases.Clasificacion;
 import Clases.Equipo;
 import Clases.Jugador;
 import Clases.Partido;
@@ -245,9 +246,9 @@ public class Comandos implements ParametrosConexion{
 			for (Partido partido : Partidos) {
 				cs =  conn.prepareCall("{call insertMatches(?,?,?,?)}");
 				cs.setString(1,partido.getTeamA());
-				cs.setInt(1,partido.getGolsA());
-				cs.setString(1,partido.getTeamB());
-				cs.setInt(1,partido.getGolsB());
+				cs.setInt(2,partido.getGolsA());
+				cs.setString(3,partido.getTeamB());
+				cs.setInt(4,partido.getGolsB());
 				cs.executeUpdate();
 			}
 		} catch (Exception e) {
@@ -259,14 +260,20 @@ public class Comandos implements ParametrosConexion{
 	}
 	public void carga_inicial_clasificacion() {
 		Comandos c = new Comandos();
-		ArrayList<Equipo> lista_equipos = c.crear_Lista_Equipos();
 		Connection conn = null;
+		ArrayList<Equipo> lista_equipos = c.crear_Lista_Equipos();
+		ArrayList<Clasificacion> nombre_equipos =new ArrayList<Clasificacion>();
+		Clasificacion c2 = null;
+		for (Equipo equipo : lista_equipos) {
+			c2 = new Clasificacion(equipo.getTeam_name());
+			nombre_equipos.add(c2);
+		}
 		CallableStatement cs = null;
 		try {
 			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
-			for (Equipo equipo : lista_equipos) {
+			for (Clasificacion clasificacion : nombre_equipos) {
 				cs =conn.prepareCall("{call InsertClassification(?,?,?,?,?)}");
-				cs.setString(1, equipo.getTeam_name());
+				cs.setString(1, clasificacion.getTeam());
 				cs.setInt(2, 0);
 				cs.setInt(3,0);
 				cs.setInt(4, 0);
@@ -387,11 +394,6 @@ public class Comandos implements ParametrosConexion{
 		lista_partidos.add(p3);
 		lista_partidos.add(p2);
 		return lista_partidos;
-	}
-
-	public static void main(String[] args) {
-		Comandos c = new Comandos();
-		c.carga_inicial_clasificacion();
 	}
 }
 
