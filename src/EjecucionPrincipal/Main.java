@@ -34,7 +34,8 @@ public class Main implements ParametrosConexion{
 					+ "\n3 - Validar si todos los equipos tienen 5 jugadores como minimo "
 					+ "\n4 - Insertar Jugador"
 					+ "\n5 - Eliminar Jugador"
-					+ "\n6 - Intercambiar Jugadores entre Equipos");
+					+ "\n6 - Intercambiar Jugadores entre Equipos"
+					+ "\n7 - Alter Table Teams");
 			System.out.println("=================");
 			System.out.print("Opcion:");
 			opcion = scan.nextInt();
@@ -77,6 +78,10 @@ public class Main implements ParametrosConexion{
 				id_player= scan.nextInt();
 
 				c5.Eliminar(id_player, conn);
+			case 7:
+				Comandos c6 = new Comandos();
+				c6.alterTable();
+				break;
 			}
 			System.out.print("Quieres Continuar?");
 			confirmacion = scan.next();

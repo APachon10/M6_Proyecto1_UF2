@@ -395,5 +395,20 @@ public class Comandos implements ParametrosConexion{
 		lista_partidos.add(p2);
 		return lista_partidos;
 	}
+	
+	public void alterTable() {
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			CallableStatement cs = conn.prepareCall("{call altertableteams()}");
+			cs.executeUpdate();
+		} catch (Exception e) {
+			
+		}
+	}
+	public void updateClassification() {
+		
+	}
+
 }
 
