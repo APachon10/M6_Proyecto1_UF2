@@ -3,6 +3,7 @@ package EjecucionPrincipal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import Clases.Equipo;
@@ -12,17 +13,23 @@ import Interfaces.ParametrosConexion;
 
 public class Main implements ParametrosConexion{
 	public static void main(String[] args) {
+		/*Hacemos la Conexion */
 		Comandos c = new Comandos();
 		Connection conn = c.conexion(ParametrosConexion.url, ParametrosConexion.user, ParametrosConexion.pass);
 		conn = c.conexion(ParametrosConexion.url, ParametrosConexion.user, ParametrosConexion.pass);
+		/*Metemos los Datos dentro de la tabla */
 		c.crearTablas_SQL();
-		c.carga_inicial_equipos();
-		c.carga_incial_jugadores();
-		c.carga_inicial_partidos();
-		c.carga_inicial_clasificacion();
+		if(c.consultarTablaEquipos() == false && c.consultarTablajugadores()== false && c.consultarTablapartidos()==false && c.consultarTablaClasificacion()==false) {
+			c.carga_inicial_equipos();
+			c.carga_incial_jugadores();
+			c.carga_inicial_partidos();
+			c.carga_inicial_clasificacion();
+		}
+		/*Nos vamos hacia el Menu*/
 		Menu(conn);
 	}
 	public static void Menu(Connection conn) {
+		/*Iniciamos un Scanner para insertar Datos */
 		Scanner scan = new Scanner(System.in);
 		int opcion = 0;
 		String confirmacion = "";

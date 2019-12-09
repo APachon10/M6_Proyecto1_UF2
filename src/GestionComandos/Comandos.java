@@ -203,6 +203,7 @@ public class Comandos implements ParametrosConexion{
 			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
 			CallableStatement cs=null;
 			for (Jugador player : lista_jugadores) {
+				System.out.println("Hola:" + player);
 				cs =  conn.prepareCall("{call insertPlayers(?,?,?,?)}");
 				cs.setString(1, player.getPlayer_name());
 				cs.setString(2, player.getPosition());
@@ -220,7 +221,6 @@ public class Comandos implements ParametrosConexion{
 		Connection conn = null;
 		Comandos c = new Comandos();
 		ArrayList<Equipo> Equipos = c.crear_Lista_Equipos();
-
 		try {
 			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
 			CallableStatement cs=null;
@@ -242,6 +242,7 @@ public class Comandos implements ParametrosConexion{
 
 		try {
 			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+
 			CallableStatement cs=null;
 			for (Partido partido : Partidos) {
 				cs =  conn.prepareCall("{call insertMatches(?,?,?,?)}");
@@ -278,7 +279,7 @@ public class Comandos implements ParametrosConexion{
 				cs.setInt(3,0);
 				cs.setInt(4, 0);
 				cs.setInt(5, 0);
-				
+
 				cs.executeUpdate();
 			}
 		} catch (Exception e) {
@@ -395,7 +396,7 @@ public class Comandos implements ParametrosConexion{
 		lista_partidos.add(p2);
 		return lista_partidos;
 	}
-	
+
 	public void alterTable() {
 		Connection conn = null;
 		try {
@@ -411,7 +412,7 @@ public class Comandos implements ParametrosConexion{
 	public void updateClassification() {
 		Connection conn = null;
 		try {
-			
+
 		} catch (Exception e) {
 			System.out.println("Error");
 			System.out.println("=================");
@@ -419,5 +420,78 @@ public class Comandos implements ParametrosConexion{
 		}
 	}
 
+	/*Procemidientos `para mirar tablas*/
+	public boolean consultarTablaEquipos() {
+		boolean confirm = false;
+		String query = "Select * from teams";
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs =pst.executeQuery();
+			while(rs.next()) {
+				confirm =  true;
+			}
+		} catch (Exception e) {
+			System.out.println("Error");
+			System.out.println("=================");
+			e.printStackTrace();
+		}
+		return confirm;
+	}
+	public boolean consultarTablajugadores() {
+		boolean confirm = false;
+		String query = "Select * from players";
+		Connection conn= null;
+		try {
+			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs =pst.executeQuery();
+			while(rs.next()) {
+				confirm =  true;
+			}
+		} catch (Exception e) {
+			System.out.println("Error");
+			System.out.println("=================");
+			e.printStackTrace();
+		}
+		return confirm;
+	}
+	public boolean consultarTablapartidos() {
+		boolean confirm = false;
+		String query = "Select * from matchs";
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs =pst.executeQuery();
+			while(rs.next()) {
+				confirm =  true;
+			}
+		} catch (Exception e) {
+			System.out.println("Error");
+			System.out.println("=================");
+			e.printStackTrace();
+		}
+		return confirm;
+	}
+	public boolean consultarTablaClasificacion() {
+		boolean confirm = false;
+		String query = "Select * from classification";
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs =pst.executeQuery();
+			while(rs.next()) {
+				confirm =  true;
+			}
+		} catch (Exception e) {
+			System.out.println("Error");
+			System.out.println("=================");
+			e.printStackTrace();
+		}
+		return confirm;
+	}
 }
 
