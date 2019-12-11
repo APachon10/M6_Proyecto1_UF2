@@ -18,14 +18,14 @@ public class Main implements ParametrosConexion{
 		Connection conn = c.conexion(ParametrosConexion.url, ParametrosConexion.user, ParametrosConexion.pass);
 		conn = c.conexion(ParametrosConexion.url, ParametrosConexion.user, ParametrosConexion.pass);
 		/*Metemos los Datos dentro de la tabla */
-		c.crearTablas_SQL();
+		/*c.crearTablas_SQL();
 		if(c.consultarTablaEquipos() == false && c.consultarTablajugadores()== false && c.consultarTablapartidos()==false && c.consultarTablaClasificacion()==false) {
 			c.carga_inicial_equipos();
 			c.carga_incial_jugadores();
 			c.carga_inicial_partidos();
 			c.carga_inicial_clasificacion();
-		}
-		System.out.println(c.crear_Lista_Jugadores());
+		}*/
+		
 		/*Nos vamos hacia el Menu*/
 		Menu(conn);
 	}
@@ -43,7 +43,8 @@ public class Main implements ParametrosConexion{
 					+ "\n4 - Insertar Jugador"
 					+ "\n5 - Eliminar Jugador"
 					+ "\n6 - Intercambiar Jugadores entre Equipos"
-					+ "\n7 - Alter Table Teams");
+					+ "\n7 - Alter Table Teams"
+					+ "\n8 - Simular Jornada");
 			System.out.println("=================");
 			System.out.print("Opcion:");
 			opcion = scan.nextInt();
@@ -89,6 +90,10 @@ public class Main implements ParametrosConexion{
 			case 7:
 				Comandos c6 = new Comandos();
 				c6.alterTable();
+				break;
+			case 8:
+				Comandos c7 = new Comandos();
+				c7.simular_jornada();
 				break;
 			}
 			System.out.print("Quieres Continuar?");

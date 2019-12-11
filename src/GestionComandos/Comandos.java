@@ -138,7 +138,7 @@ public class Comandos implements ParametrosConexion{
 				cs =  conn.prepareCall("{call insertTeams(?)}");
 				cs.setString(1, ((Equipo) obj).getTeam_name());
 				cs.executeUpdate();
-				
+
 				System.out.println("========================");
 				String select2 = "select * from teams ";
 				PreparedStatement pst2 = conn.prepareStatement(select2);
@@ -171,6 +171,37 @@ public class Comandos implements ParametrosConexion{
 		} catch (Exception e) {
 			System.out.println("Error ");
 			System.out.println("==========");
+			e.printStackTrace();
+		}
+	}
+	//Simular Jornada 
+	public void  simular_jornada() {
+		ArrayList<Clasificacion> jornada = new ArrayList<Clasificacion>();
+		Clasificacion c = new Clasificacion("",0,0,0,0);
+		String query = "select * from matchs";
+		try {
+			Connection conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			PreparedStatement ps = conn.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				
+				c = new Clasificacion();
+				c.setPosition_id(rs.getInt(1));
+				c.setTeam(rs.getString(2));
+				c.setWins(rs.getInt(3));
+				c.setLoses(rs.getInt(3));
+				c.setDraws(rs.getInt(4));
+				c.setPoints(rs.getInt(5));
+				
+				System.out.println(c.toString());
+				jornada.add(c);
+			}
+			for (Clasificacion clasificacion : jornada) {
+				System.out.println("Hola: "+clasificacion);
+			}
+		} catch (Exception e) {
+			System.out.println("Error");
+			System.out.println("=================");
 			e.printStackTrace();
 		}
 	}
@@ -405,6 +436,7 @@ public class Comandos implements ParametrosConexion{
 		return lista_partidos;
 	}
 
+
 	public void alterTable() {
 		Connection conn = null;
 		try {
@@ -428,7 +460,7 @@ public class Comandos implements ParametrosConexion{
 		}
 	}
 
-	/*Procemidientos `para mirar tablas*/
+	/*Procemidientos `para mirar si las tablas estan vacias o no */
 	public boolean consultarTablaEquipos() {
 		boolean confirm = false;
 		String query = "Select * from teams";

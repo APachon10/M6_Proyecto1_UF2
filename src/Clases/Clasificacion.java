@@ -5,6 +5,18 @@ public class Clasificacion {
 	String team;
 	int wins,loses,draws,points;
 	//Builder
+	public Clasificacion() {
+		if(position_id <=0) {
+			this.position_id = 0;
+		}else {
+			this.position_id = this.position_id+1;
+		}
+		this.team = team;
+		this.wins = wins;
+		this.loses = loses;
+		this.draws = draws;
+		this.points = points;
+	}
 	public Clasificacion(String team, int wins, int loses, int draws, int points) {
 		if(position_id <=0) {
 			this.position_id = 0;
