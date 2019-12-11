@@ -75,9 +75,8 @@ public class Comandos implements ParametrosConexion{
 
 				ResultSet rs = pst.executeQuery();
 				while(rs.next()) {
-					players_number = rs.getInt(1);
+					players_number = ((Number) rs.getObject(1)).intValue();
 				}
-
 				if(players_number == 5) {
 					System.out.println("El equipo tiene almenos 5 jugadores");
 				}else{
@@ -178,34 +177,117 @@ public class Comandos implements ParametrosConexion{
 	public void  simular_jornada() {
 		ArrayList<Clasificacion> jornada = new ArrayList<Clasificacion>();
 		Clasificacion c = new Clasificacion("",0,0,0,0);
-		String query = "select * from matchs";
+		int numeroPartidos = 0;
+		String query = "select count(*) from matchs";
+		String query_golesA = "Select GoalsA from matchs";
+		String query_golesB = "Select GoalsB from matchs";
+		
+		System.out.println("Clasificacion ");
+		select_clasificacion();
+		System.out.println("==========================");
+		System.out.println("Partidos");
+		select_partidos();
+		
 		try {
 			Connection conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
-			PreparedStatement ps = conn.prepareStatement(query);
-			ResultSet rs = ps.executeQuery();
+			int i=0;
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			int golesA,golesB;
 			while(rs.next()) {
-				
-				c = new Clasificacion();
-				c.setPosition_id(rs.getInt(1));
-				c.setTeam(rs.getString(2));
-				c.setWins(rs.getInt(3));
-				c.setLoses(rs.getInt(3));
-				c.setDraws(rs.getInt(4));
-				c.setPoints(rs.getInt(5));
-				
-				System.out.println(c.toString());
-				jornada.add(c);
+				numeroPartidos = ((Number) rs.getObject(1)).intValue();
 			}
-			for (Clasificacion clasificacion : jornada) {
-				System.out.println("Hola: "+clasificacion);
+			while(i<=numeroPartidos) {
+				PreparedStatement pst1 = conn.prepareStatement(query_golesA);
+				ResultSet rs1 = pst1.executeQuery();
+				PreparedStatement pst2= conn.prepareStatement(query_golesB);
+				ResultSet rs2  = pst2.executeQuery();
+				while(rs1.next() && rs2.next()) {
+					golesA = ((Number) rs1.getObject(1)).intValue();
+					golesB = ((Number) rs2.getObject(1)).intValue();
+					
+					if(golesA > golesB) {
+						String queryA= "update  classification set wins = 1 where team='FcBarcelona'";
+						String queryA_B = "update  classification set points =3 where team ='FcBarcelona'";
+						
+						String queryB= "update classification set loses = 1 where team ='Movistas_Inter'";
+						PreparedStatement pst3 = conn.prepareStatement(queryA);
+						pst3.executeUpdate();
+						PreparedStatement pst4 = conn.prepareStatement(queryA_B);
+						pst4.executeUpdate();
+						PreparedStatement pst5 = conn.prepareStatement(queryB);
+						pst5.executeUpdate();
+					}else if(golesB>golesA) {
+						String queryA= "update classification set loses = 1 where team ='ElPozo_Murcia'";
+						
+						String queryB= "update classification set wins = 1 where team ='Cartagena'";
+						String queryA_B = "update classification set points = 3 where team ='Cartagena'";
+						
+						PreparedStatement pst3 = conn.prepareStatement(queryA);
+						pst3.executeUpdate();
+						PreparedStatement pst4 = conn.prepareStatement(queryB);
+						pst4.executeUpdate();
+						PreparedStatement pst5 = conn.prepareStatement(queryA_B);
+						pst5.executeUpdate();
+						
+					}else if(golesB==golesA) {
+						String queryA= "update classification set draws = 1 where team = 'Zaragoza'";
+						String queryA_B = "update classification set points = 1 where team = 'Zaragoza'";
+						String queryB= "update classification set draws = 1 where team = 'Santa Coloma'";
+						String queryB_B = "update classification set points = 1 where team = 'Santa Coloma'";
+						
+						PreparedStatement pst3 = conn.prepareStatement(queryA);
+						pst3.executeUpdate();
+						PreparedStatement pst4 = conn.prepareStatement(queryA_B);
+						pst4.executeUpdate();
+						PreparedStatement pst5 = conn.prepareStatement(queryB);
+						pst5.executeUpdate();
+						PreparedStatement pst6 = conn.prepareStatement(queryB_B);
+						pst6.executeUpdate();
+					}
+				}
+				i++;
 			}
+			System.out.println("==========================");
+			System.out.println("Clasificacion despues de los partidos ");
+			select_clasificacion();
 		} catch (Exception e) {
 			System.out.println("Error");
 			System.out.println("=================");
 			e.printStackTrace();
 		}
 	}
-
+	public void select_partidos() {
+		String query  = "Select * from matchs";
+		try {
+			Connection conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()) {
+				System.out.println(rs.getInt(1)+" - "+rs.getString(2)+" - "+rs.getInt(3)+" - "+rs.getString(4)+" - "+rs.getInt(5));
+			}
+		} catch (Exception e) {
+			System.out.println("Error ");
+			System.out.println("==========");
+			e.printStackTrace();
+		}
+	}
+	public void select_clasificacion() {
+		String query  = "Select * from classification";
+		try {
+			Connection conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()) {
+				System.out.println(rs.getInt(1)+" - "+rs.getString(2)+" - "+rs.getInt(3)+" - "+rs.getInt(4)+" - "
+			+rs.getInt(5)+" - "+rs.getInt(6));
+			}
+		} catch (Exception e) {
+			System.out.println("Error ");
+			System.out.println("==========");
+			e.printStackTrace();
+		}
+	}
 	//Carga Inicial de Datos 
 	public void crearTablas_SQL() {
 		Connection conn = null;

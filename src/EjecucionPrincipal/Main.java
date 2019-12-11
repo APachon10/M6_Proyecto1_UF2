@@ -18,13 +18,13 @@ public class Main implements ParametrosConexion{
 		Connection conn = c.conexion(ParametrosConexion.url, ParametrosConexion.user, ParametrosConexion.pass);
 		conn = c.conexion(ParametrosConexion.url, ParametrosConexion.user, ParametrosConexion.pass);
 		/*Metemos los Datos dentro de la tabla */
-		/*c.crearTablas_SQL();
+		c.crearTablas_SQL();
 		if(c.consultarTablaEquipos() == false && c.consultarTablajugadores()== false && c.consultarTablapartidos()==false && c.consultarTablaClasificacion()==false) {
 			c.carga_inicial_equipos();
 			c.carga_incial_jugadores();
 			c.carga_inicial_partidos();
 			c.carga_inicial_clasificacion();
-		}*/
+		}
 		
 		/*Nos vamos hacia el Menu*/
 		Menu(conn);
