@@ -25,6 +25,7 @@ public class Main implements ParametrosConexion{
 			c.carga_inicial_partidos();
 			c.carga_inicial_clasificacion();
 		}
+		System.out.println(c.crear_Lista_Jugadores());
 		/*Nos vamos hacia el Menu*/
 		Menu(conn);
 	}

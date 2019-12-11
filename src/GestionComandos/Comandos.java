@@ -94,10 +94,7 @@ public class Comandos implements ParametrosConexion{
 	public void insert(Object obj,Connection conn) {
 		String insert = "";
 		if(obj instanceof Jugador) {
-			insert = "insert into players(nom_jugador,posicio,ID_equip,nom_equip) values(?,?,?,?)";
 			try {
-				PreparedStatement pst1;
-
 				System.out.println("========================");
 				String select = "select * from players ";
 				PreparedStatement pst3 = conn.prepareStatement(select);
@@ -105,15 +102,14 @@ public class Comandos implements ParametrosConexion{
 				while(rs2.next()) {
 					System.out.println(rs2.getInt(1) + " - " + rs2.getString(2) + " - " 
 							+rs2.getString(3)+ " - " +rs2.getInt(4)+ " - " +rs2.getString(5) );
-
 				}
-				pst1 = conn.prepareStatement(insert);
-				pst1.setString(1, ((Jugador) obj).getPlayer_name());
-				pst1.setString(2, ((Jugador) obj).getPosition());
-				pst1.setInt(3, ((Jugador) obj).getId_team());
-				pst1.setString(4, ((Jugador) obj).getTeam_name());
-
-				pst1.executeUpdate();
+				//Llamamos al Procedimiento para insertar jugadores
+				CallableStatement cs = conn.prepareCall("{call insertPlayers(?,?,?,?)}");
+				cs.setString(1, ((Jugador) obj).getPlayer_name());
+				cs.setString(2, ((Jugador) obj).getPosition());
+				cs.setInt(3, ((Jugador) obj).getId_team());
+				cs.setString(4, ((Jugador) obj).getTeam_name());
+				cs.executeUpdate();
 
 				System.out.println("========================");
 				String select2 = "select * from players ";
@@ -122,7 +118,6 @@ public class Comandos implements ParametrosConexion{
 				while(rs.next()) {
 					System.out.println(rs.getInt(1) + " - " + rs.getString(2) + " - " 
 							+rs.getString(3)+ " - " +rs.getInt(4)+ " - " +rs.getString(5) );
-
 				}
 			} catch (Exception e) {
 				System.out.println("Error");
@@ -130,10 +125,8 @@ public class Comandos implements ParametrosConexion{
 				e.printStackTrace();
 			}
 		}else if(obj instanceof Equipo) {
-			insert = "insert into teams(nom_equip) values(?)";
 			try {
 				conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
-				PreparedStatement pst1;
 
 				String select = "select * from teams ";
 				PreparedStatement pst3 = conn.prepareStatement(select);
@@ -141,10 +134,11 @@ public class Comandos implements ParametrosConexion{
 				while(rs2.next()) {
 					System.out.println(rs2.getInt(1) + " - " + rs2.getString(2));
 				}
-				pst1 = conn.prepareStatement(insert);
-				pst1.setString(1, ((Equipo) obj).getTeam_name());
-
-				pst1.executeUpdate();
+				CallableStatement cs = null;
+				cs =  conn.prepareCall("{call insertTeams(?)}");
+				cs.setString(1, ((Equipo) obj).getTeam_name());
+				cs.executeUpdate();
+				
 				System.out.println("========================");
 				String select2 = "select * from teams ";
 				PreparedStatement pst2 = conn.prepareStatement(select2);
@@ -311,47 +305,61 @@ public class Comandos implements ParametrosConexion{
 	}
 	public ArrayList crear_Lista_Jugadores() {
 		ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+		ArrayList<Integer> id_equipos = new ArrayList<Integer>(); 
+		String query = "Select id_equip from teams";
+		int id_number =0;
+		try {
+			Connection conn = DriverManager.getConnection(ParametrosConexion.url,ParametrosConexion.user,ParametrosConexion.pass);
+			PreparedStatement pst = conn.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			while(rs.next()) {
+				id_number = rs.getInt(1);
+				id_equipos.add(id_number);
+			}
 
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		//Creamos Los jugadores 
-		Jugador j1 = new Jugador("Alex Lluch Romeu", "Portero", 1, "FcBarcelona");
-		Jugador j2 = new Jugador("Jesus Nazaret", "Cierre", 1, "FcBarcelona");
-		Jugador j3 = new Jugador("Adolfo ", "Ala", 1, "FcBarcelona");
-		Jugador j4 = new Jugador("Leandro Rodrigues", "Pivot", 1, "FcBarcelona");
-		Jugador j5 = new Jugador("Mario Rivillos", "Ala", 1, "FcBarcelona");
+		Jugador j1 = new Jugador("Alex Lluch Romeu", "Portero",id_equipos.get(0),"FcBarcelona");
+		Jugador j2 = new Jugador("Jesus Nazaret", "Cierre", id_equipos.get(0), "FcBarcelona");
+		Jugador j3 = new Jugador("Adolfo ", "Ala", id_equipos.get(0), "FcBarcelona");
+		Jugador j4 = new Jugador("Leandro Rodrigues", "Pivot", id_equipos.get(0), "FcBarcelona");
+		Jugador j5 = new Jugador("Mario Rivillos", "Ala", id_equipos.get(0), "FcBarcelona");
 
 		//JUgadores elPozo
-		Jugador j6 = new Jugador("Carlos Eduardo", "Portero", 2, "ElPozo Murcia");
-		Jugador j7 = new Jugador("Gines Gabarron", "Cierre", 2, "ElPozo Murcia");
-		Jugador j8 = new Jugador("Antonio Fernando", "Ala", 2, "ElPozo Murcia");
-		Jugador j9 = new Jugador("Alejandro Yepes", "Pivot", 2, "ElPozo Murcia");
-		Jugador j10 = new Jugador("Miguel", "Ala", 2, "ElPozo Murcia");
+		Jugador j6 = new Jugador("Carlos Eduardo", "Portero", id_equipos.get(1), "ElPozo Murcia");
+		Jugador j7 = new Jugador("Gines Gabarron", "Cierre", id_equipos.get(1), "ElPozo Murcia");
+		Jugador j8 = new Jugador("Antonio Fernando", "Ala", id_equipos.get(1), "ElPozo Murcia");
+		Jugador j9 = new Jugador("Alejandro Yepes", "Pivot", id_equipos.get(1), "ElPozo Murcia");
+		Jugador j10 = new Jugador("Miguel", "Ala", id_equipos.get(1), "ElPozo Murcia");
 
 		//Jugadores Movistar Inter
-		Jugador j11 = new Jugador("Alejandro Gonsalez", "Portero", 3, "Movistar Inter");
-		Jugador j12 = new Jugador("Marlon Oliveira", "Cierre", 3, "Movistar Inter");
-		Jugador j13 = new Jugador("Fabricio Bastesini", "Ala", 3, "Movistar Inter");
-		Jugador j14 = new Jugador("Francisco Humberto", "Pivot", 3, "Movistar Inter");
-		Jugador j15 = new Jugador("Adrian Alonso", "Ala", 3, "Movistar Inter");
+		Jugador j11 = new Jugador("Alejandro Gonsalez", "Portero", id_equipos.get(2), "Movistar Inter");
+		Jugador j12 = new Jugador("Marlon Oliveira", "Cierre", id_equipos.get(2), "Movistar Inter");
+		Jugador j13 = new Jugador("Fabricio Bastesini", "Ala", id_equipos.get(2), "Movistar Inter");
+		Jugador j14 = new Jugador("Francisco Humberto", "Pivot", id_equipos.get(2), "Movistar Inter");
+		Jugador j15 = new Jugador("Adrian Alonso", "Ala", id_equipos.get(2), "Movistar Inter");
 
 		//Jugadores Cartagena
-		Jugador j16 = new Jugador("Alejandro Rivera", "Portero", 4, "Cartagena");
-		Jugador j17 = new Jugador("Marlon Rivallos", "Cierre", 4, "Cartagena");
-		Jugador j18 = new Jugador("Carlos Martines", "Ala", 4, "Cartagena");
-		Jugador j19 = new Jugador("Marc Morales", "Pivot", 4, "Cartagena");
-		Jugador j20 = new Jugador("Adrian Sanchez", "Ala", 4, "Cartagena");
+		Jugador j16 = new Jugador("Alejandro Rivera", "Portero", id_equipos.get(3), "Cartagena");
+		Jugador j17 = new Jugador("Marlon Rivallos", "Cierre", id_equipos.get(3), "Cartagena");
+		Jugador j18 = new Jugador("Carlos Martines", "Ala", id_equipos.get(3), "Cartagena");
+		Jugador j19 = new Jugador("Marc Morales", "Pivot", id_equipos.get(3), "Cartagena");
+		Jugador j20 = new Jugador("Adrian Sanchez", "Ala", id_equipos.get(3), "Cartagena");
 
 		//Jugadores Zaragoza
-		Jugador j21 = new Jugador("Alejandro Oliviera", "Portero", 5, "Zaragoza");
-		Jugador j22 = new Jugador("Carlos Rivallos", "Cierre", 5, "Zaragoza");
-		Jugador j23 = new Jugador("Marc Martines", "Ala", 5, "Zaragoza");
-		Jugador j24 = new Jugador("Adrian Morales", "Pivot", 5, "Zaragoza");
-		Jugador j25 = new Jugador("Sean Sanches", "Ala", 5, "Zaragoza");
+		Jugador j21 = new Jugador("Alejandro Oliviera", "Portero", id_equipos.get(4), "Zaragoza");
+		Jugador j22 = new Jugador("Carlos Rivallos", "Cierre", id_equipos.get(4), "Zaragoza");
+		Jugador j23 = new Jugador("Marc Martines", "Ala", id_equipos.get(4), "Zaragoza");
+		Jugador j24 = new Jugador("Adrian Morales", "Pivot", id_equipos.get(4), "Zaragoza");
+		Jugador j25 = new Jugador("Sean Sanches", "Ala", id_equipos.get(4), "Zaragoza");
 
 		//Jugadores Santa Coloma 
-		Jugador j26 = new Jugador("Carlos Oliviera", "Portero", 6, "Santa Coloma");
-		Jugador j27 = new Jugador("Marcos Rivallos", "Cierre", 6, "Santa Coloma");
-		Jugador j28 = new Jugador("Marcelo Martines", "Ala", 6, "Santa Coloma");
-		Jugador j29 = new Jugador("Adolf Morales", "Pivot", 6, "Santa Coloma");
+		Jugador j26 = new Jugador("Carlos Oliviera", "Portero", id_equipos.get(5), "Santa Coloma");
+		Jugador j27 = new Jugador("Marcos Rivallos", "Cierre", id_equipos.get(5), "Santa Coloma");
+		Jugador j28 = new Jugador("Marcelo Martines", "Ala", id_equipos.get(5), "Santa Coloma");
+		Jugador j29 = new Jugador("Adolf Morales", "Pivot", id_equipos.get(5), "Santa Coloma");
 
 		jugadores.add(j1);
 		jugadores.add(j2);
